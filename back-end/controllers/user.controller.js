@@ -8,51 +8,33 @@ export const create = async (req, res) => {
 
     let { email, password, passwordConf } = req.body;
 
-    let errors = [];
-  
     console.log({ email, password, passwordConf });
   
-    if (!email || !password || !passwordConf) {
-        errors.push({ message: "Please enter all fields" });
-    }
-  
-    if (password.length < 8) {
-        errors.push({ message: "Password must be a least 8 characters long" });
-    }
-  
-    if (password !== passwordConf) {
-        errors.push({ message: "Passwords do not match" });
-    }
-  
-    if (errors.length > 0) {
-        res.status(400).json({ errors });
-    } else {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        console.log(hashedPassword);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword);
 
-        // Check if email already exist
-        db.user.findOne({ where: { user_name: email } }).then(user => {
-            console.log(user);
-            if (user) {
-                return res.status(400).json({ message: "Email already registered" });   
-            }
-            else {
-                // Create new user
-                db.user.create({ user_name: email, password: hashedPassword }).then(newUser => {
-                    req.flash("success_msg", "You are now registered. Please log in");
-                    res.redirect("/user/login");
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(500).send({ message: "Error creating user" });
-                });
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).send({ message: "Error checking email" });
-        });
-    }
+    // Check if email already exist
+    db.user.findOne({ where: { user_name: email } }).then(user => {
+        console.log(user);
+        if (user) {
+            return res.status(400).json({ message: "Email already registered" });   
+        }
+        else {
+            // Create new user
+            db.user.create({ user_name: email, password: hashedPassword }).then(newUser => {
+                req.flash("success_msg", "You are now registered. Please log in");
+                res.redirect("/user/login");
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).send({ message: "Error creating user" });
+            });
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).send({ message: "Error checking email" });
+    });
 
     return;
 
