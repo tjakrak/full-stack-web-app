@@ -9,6 +9,8 @@ import flash from 'express-flash';
 import passport from 'passport';
 import { initializePassport } from './config/passport.config.js';
 
+dotenv.config();
+
 const app = express();
 
 initializePassport(passport);
@@ -27,9 +29,9 @@ app.get("/", (req, res) => {
     res.send("Success!");
 })
 
-app.post("/register", async (req, res) => {
-    const { email, password } = req.body;
-})
+// app.post("/register", async (req, res) => {
+//     const { email, password } = req.body;
+// })
 
 userRoutes(app);
 

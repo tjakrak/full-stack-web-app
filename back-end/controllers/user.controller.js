@@ -6,13 +6,13 @@ const Op = db.Sequelize.Op;
 // register
 export const create = async (req, res) => {
 
-    let { email, password, password2 } = req.body;
+    let { email, password, passwordConf } = req.body;
 
     let errors = [];
   
-    console.log({ email, password, password2 });
+    console.log({ email, password, passwordConf });
   
-    if (!email || !password || !password2) {
+    if (!email || !password || !passwordConf) {
         errors.push({ message: "Please enter all fields" });
     }
   
@@ -20,7 +20,7 @@ export const create = async (req, res) => {
         errors.push({ message: "Password must be a least 8 characters long" });
     }
   
-    if (password !== password2) {
+    if (password !== passwordConf) {
         errors.push({ message: "Passwords do not match" });
     }
   

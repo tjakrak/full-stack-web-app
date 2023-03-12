@@ -35,8 +35,8 @@ export function initializePassport(passport) {
 
     passport.deserializeUser(async (id, done) => {
         try {
-            const user = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
-            done(null, user.rows[0]);
+            const user = await db.user.findByPk(id);
+            done(null, user);
         } catch (err) {
             done(err);
         }

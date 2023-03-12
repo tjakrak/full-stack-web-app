@@ -1,5 +1,5 @@
 const sessionConfig = {
-    secret: 'mysecret',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 };
