@@ -1,10 +1,10 @@
 import express from 'express';
-import { create, login } from '../controllers/user.controller.js';
+import { register, login } from '../controllers/user.controller.js';
 
 const router = express.Router();
 
 // Register a new user
-router.post("/register", create);
+router.post("/register", register);
 
 // Login
 router.get("/login", login);
@@ -33,6 +33,6 @@ router.get("/login", login);
 // app.use("/api/tutorials", router);
 
 export default (app) => {
-    app.use("api/user", router);
+    app.use("/api/user", router);
 };
   

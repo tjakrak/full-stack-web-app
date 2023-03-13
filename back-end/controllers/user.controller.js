@@ -4,11 +4,11 @@ const Tutorial = db.tutorials;
 const Op = db.Sequelize.Op;
 
 // register
-export const create = async (req, res) => {
+export const register = async (req, res) => {
 
-    let { email, password, passwordConf } = req.body;
+    let { email, password } = req.body;
 
-    console.log({ email, password, passwordConf });
+    console.log({ email, password });
   
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log(hashedPassword);
@@ -22,8 +22,8 @@ export const create = async (req, res) => {
         else {
             // Create new user
             db.user.create({ user_name: email, password: hashedPassword }).then(newUser => {
-                req.flash("success_msg", "You are now registered. Please log in");
-                res.redirect("/user/login");
+                console.log("Successfully create a new user");
+                res.status(200);
             })
             .catch(err => {
                 console.log(err);
