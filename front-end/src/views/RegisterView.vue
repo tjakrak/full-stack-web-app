@@ -1,11 +1,7 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css'
-import { useRouter } from 'vue-router'
-import axios from 'axios'
-import bcrypt from 'bcryptjs'
-
-const router = useRouter();
+import axios from '@/axios'
 
 const username = ref('');
 const password = ref('');
@@ -24,27 +20,29 @@ const Register = async() => {
     return alert("Passwords do not match");
   }
 
-  // use Bcrypt to hash the password
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password.value, salt);
-
-  console.log(hashedPassword);
   // create an object with the data that is going to be sent to the backend
   const data = {
-    username: username.value,
-    password: hashedPassword,
+    email: username.value,
+    password: password.value
   };
 
-  // send the data to the backend using Axios
-  axios.post('/api/user/register', data)
-    .then(response => {
-      // handle the response from the backend
-      router.push('/');
-    })
-    .catch(error => {
-      // handle any errors
+
+  try {
+    const response = await axios.post('/api/user/register', { 
+      email: username.value, 
+      password: password.value
     });
-    
+
+    const successMessage = response.data.message;
+    console.log(response.data);
+    return alert(successMessage);
+  } catch (error) {
+    const errorMessage = error.response.data.message;
+    console.log(error.response.data.message);
+    // throw new Error(error.response.status);
+
+    return alert(errorMessage);
+  }
 }
 
 </script>

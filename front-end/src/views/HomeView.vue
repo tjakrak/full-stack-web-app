@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import Accordion from '../components/Accordion.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <Accordion></Accordion>
   </main>
 </template>

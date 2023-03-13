@@ -39,19 +39,19 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(async(to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    // Authentication check
-    const token = localStorage.getItem('token');
+// router.beforeEach(async (to, from, next) => {
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//     // Authentication check
+//     const token = localStorage.getItem('token')
 
-    if (token) {
-      return next();
-    }
+//     if (token) {
+//       return next()
+//     }
 
-    return next('/login');
-  }
+//     return next('/login')
+//   }
 
-  next()
-})
+//   next()
+// })
 
 export default router

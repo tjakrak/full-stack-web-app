@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/register", register);
 
 // Login
-router.get("/login", login);
+router.post("/login", login);
 
 // // Create a new Tutorial
 // router.post("/", tutorials.create);
