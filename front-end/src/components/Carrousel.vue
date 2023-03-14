@@ -8,7 +8,7 @@ import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-s
       <span class="slds-carousel__autoplay">
         <button class="slds-button slds-button_icon slds-button_icon-border-filled slds-button_icon-x-small" aria-pressed="false" title="Stop auto-play">
           <svg class="slds-button__icon" aria-hidden="true">
-            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#pause"></use>
+            <use xlink:href="@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#pause"></use>
           </svg>
           <span class="slds-assistive-text">Stop auto-play</span>
         </button>
@@ -17,7 +17,7 @@ import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-s
         <div id="content-id-127" class="slds-carousel__panel" role="tabpanel" aria-hidden="false" aria-labelledby="indicator-id-130">
           <a href="#" class="slds-carousel__panel-action slds-text-link_reset" tabindex="0">
             <div class="slds-carousel__image">
-              <img src="/assets/images/carousel/carousel-01.jpg" alt="Visit App Exchange" />
+              <img src="@salesforce-ux/design-system/assets/images/carousel/carousel-01.jpg" alt="Visit App Exchange" />
             </div>
             <div class="slds-carousel__content">
               <h2 class="slds-carousel__content-title">Visit App Exchange</h2>
@@ -28,7 +28,7 @@ import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-s
         <div id="content-id-128" class="slds-carousel__panel" role="tabpanel" aria-hidden="true" aria-labelledby="indicator-id-131">
           <a href="#" class="slds-carousel__panel-action slds-text-link_reset" tabindex="-1">
             <div class="slds-carousel__image">
-              <img src="/assets/images/carousel/carousel-02.jpg" alt="Click to Customize" />
+              <img src="@salesforce-ux/design-system/assets/images/carousel/carousel-02.jpg" alt="Click to Customize" />
             </div>
             <div class="slds-carousel__content">
               <h2 class="slds-carousel__content-title">Click to Customize</h2>
@@ -39,7 +39,7 @@ import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-s
         <div id="content-id-129" class="slds-carousel__panel" role="tabpanel" aria-hidden="true" aria-labelledby="indicator-id-132">
           <a href="#" class="slds-carousel__panel-action slds-text-link_reset" tabindex="-1">
             <div class="slds-carousel__image">
-              <img src="/assets/images/carousel/carousel-03.jpg" alt="Download SalesforceA" />
+              <img src="@salesforce-ux/design-system/assets/images/carousel/carousel-03.jpg" alt="Download SalesforceA" />
             </div>
             <div class="slds-carousel__content">
               <h2 class="slds-carousel__content-title">Download SalesforceA</h2>

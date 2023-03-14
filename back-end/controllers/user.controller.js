@@ -1,74 +1,89 @@
 import { db } from '../models/index.js';
 import bcrypt from 'bcrypt';
-const Tutorial = db.tutorials;
-const Op = db.Sequelize.Op;
+import jwt from 'jsonwebtoken';
+import { secretKey } from '../config/jwt.config.js';
+import passport from 'passport';
+
+// Create a JWT with a payload containing the user's ID and email
+function generateJWT(user) {
+    const payload = {
+        id: user.id,
+        email: user.username
+    };
+
+    const options = {
+        expiresIn: '1h'
+    };
+    
+    const token = jwt.sign(payload, secretKey, options);
+
+    return token;
+}
 
 // register
 export const register = async (req, res) => {
 
-    let { email, password } = req.body;
-
-    console.log({ email, password });
+    let {firstName, lastName, companyName, username, email, password} = req.body;
   
+    // Hash password uding bcrypt
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    console.log(hashedPassword);
 
-    // Check if email already exist
-    db.user.findOne({ where: { user_name: email } }).then(user => {
-        console.log(user);
+    try {
+        const user = await db.user.findOne({ where: { username: email } });
+    
+        // Check if user already exist in the database
         if (user) {
-            return res.status(400).json({ message: "Email already registere./" });   
+          return res.status(400).json({ message: 'Email already registered.' });
         }
-        else {
-            // Create new user
-            db.user.create({ user_name: email, password: hashedPassword }).then(newUser => {
-                console.log("Successfully create a new user");
-                return res.status(200).json({ message: "You have successfully registered." });
-            })
-            .catch(err => {
-                console.log(err);
-                return res.status(500).json({ message: "Error creating user." });
-            });
-        }
-    })
-    .catch(err => {
+    
+        // Store all the information to the database
+        await db.user.create({
+            first_name: firstName,
+            last_name: lastName,
+            companyName: companyName,
+            username: username,
+            email: email, 
+            password: hashedPassword 
+        });
+    
+        console.log('Successfully created a new user');
+        const jwtToken = generateJWT(user);
+
+        return res.status(200).json({ 
+            message: 'You have successfully registered.', 
+            accessToken: `Bearer ${jwtToken}` 
+        });
+
+      } catch (err) {
         console.log(err);
-        return res.status(500).json({ message: "Error checking email." });
-    });
+        return res.status(500).json({ message: 'Error creating user.' });
+      }
 };
 
 // login
-export const login = async(req, res) => {
-
-    let { email, password } = req.body;
-
-    // Find user by email
-    db.user.findOne({ where: { user_name: email } }).then(user => {
+export const login = async(req, res, next) => {
+    passport.authenticate('login', (err, user, info) => {
+        
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Server error' });
+        }
+    
         if (!user) {
-            // User not found
-            return res.status(400).json({ message: "Invalid email or password" });
+            return res.status(400).json({ message: info.message });
         }
   
-        // Compare password with hashed password in database
-        bcrypt.compare(password, user.password).then(isMatch => {
-            if (isMatch) {
-                // Passwords match, return user info
-                return res.status(200).json({
-                    id: user.id,
-                    email: user.user_name,
-                    message: "Login successful"
-                });
-            } else {
-                // Passwords do not match
-                return res.status(400).json({ message: "Invalid email or password" });
-            }
-            }).catch(err => {
+        req.logIn(user, function(err) {
+            if (err) {
                 console.error(err);
-                return res.status(500).json({ message: "Server error" });
-            });
-    }).catch(err => {
-        console.error(err);
-        return res.status(500).json({ message: "Server error" });
-    });
+                return res.status(500).json({ message: 'Server error' });
+            }
+            
+            const jwtToken = generateJWT(user);
+            return res.status(200).json({ accessToken: `Bearer ${jwtToken}` });
+        });
+  
+    })(req, res, next);
+  
 }

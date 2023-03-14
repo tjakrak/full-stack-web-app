@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css'
 import { useRouter } from 'vue-router'
 import axios from '@/axios'
+import Carrousel from '../components/Carrousel.vue'
 
 const router = useRouter();
 

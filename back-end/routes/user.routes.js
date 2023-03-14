@@ -1,5 +1,6 @@
 import express from 'express';
 import { register, login } from '../controllers/user.controller.js';
+import passport from 'passport';
 
 const router = express.Router();
 
@@ -8,6 +9,11 @@ router.post("/register", register);
 
 // Login
 router.post("/login", login);
+
+export default (app) => {
+    app.use("/api/user", router);
+};
+  
 
 // // Create a new Tutorial
 // router.post("/", tutorials.create);
@@ -31,8 +37,3 @@ router.post("/login", login);
 // router.delete("/", tutorials.deleteAll);
 
 // app.use("/api/tutorials", router);
-
-export default (app) => {
-    app.use("/api/user", router);
-};
-  

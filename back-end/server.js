@@ -1,15 +1,13 @@
 import express from 'express';
-import dotenv from 'dotenv';
+import './config/load.env.js';
 import cors from 'cors';
-import { db } from './models/index.js';
+import db from './models/index.js';
 import userRoutes from './routes/user.routes.js';
 import sessionConfig from './config/session.config.js';
 import session from 'express-session';
 import flash from 'express-flash';
 import passport from 'passport';
 import { initializePassport } from './config/passport.config.js';
-
-dotenv.config();
 
 const app = express();
 
