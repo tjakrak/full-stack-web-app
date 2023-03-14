@@ -7,14 +7,14 @@ import passport from 'passport';
 // Create a JWT with a payload containing the user's ID and email
 function generateJWT(user) {
     const payload = {
-        id: user.id,
-        email: user.username
+        username: user.username,
+        email: user.email
     };
 
     const options = {
         expiresIn: '1h'
     };
-    
+    console.log(secretKey);
     const token = jwt.sign(payload, secretKey, options);
 
     return token;
@@ -30,7 +30,7 @@ export const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     try {
-        const user = await db.user.findOne({ where: { username: email } });
+        let user = await db.user.findOne({ where: { username: email } });
     
         // Check if user already exist in the database
         if (user) {
@@ -41,13 +41,16 @@ export const register = async (req, res) => {
         await db.user.create({
             first_name: firstName,
             last_name: lastName,
-            companyName: companyName,
+            company_name: companyName,
             username: username,
             email: email, 
             password: hashedPassword 
         });
-    
-        console.log('Successfully created a new user');
+
+        user = {
+            email: email,
+            username: username 
+        }
         const jwtToken = generateJWT(user);
 
         return res.status(200).json({ 
