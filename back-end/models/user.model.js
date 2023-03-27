@@ -1,12 +1,8 @@
 const user = (sequelize, Sequelize) => {
     const User = sequelize.define("user", {
-        username: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
         email: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
         },
         password: {
             type: Sequelize.STRING,
@@ -23,6 +19,11 @@ const user = (sequelize, Sequelize) => {
         company_name: {
             type: Sequelize.STRING,
             allowNull: false
+        },
+        organization_id: {
+            type: Sequelize.INTEGER,
+            references: 'organizations',
+            referencesKey: 'id'
         }
     });
   

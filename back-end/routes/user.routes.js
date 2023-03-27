@@ -1,11 +1,13 @@
 import express from 'express';
-import { register, login } from '../controllers/user.controller.js';
-import passport from 'passport';
+import { googleRegister, register, login } from '../controllers/user.controller.js';
 
 const router = express.Router();
 
 // Register a new user
 router.post("/register", register);
+
+// Register using Google email
+router.post('/google-register', googleRegister);
 
 // Login
 router.post("/login", login);
@@ -14,6 +16,7 @@ export default (app) => {
     app.use("/api/user", router);
 };
   
+
 
 // // Create a new Tutorial
 // router.post("/", tutorials.create);
