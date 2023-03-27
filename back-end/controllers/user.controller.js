@@ -7,14 +7,14 @@ import passport from 'passport';
 // Create a JWT with a payload containing the user's ID and email
 function generateJWT(user) {
     const payload = {
-        username: user.username,
-        email: user.email
+        email: user.email,
+        company: user.companyName
     };
 
     const options = {
         expiresIn: '1h'
     };
-    console.log(secretKey);
+
     const token = jwt.sign(payload, JWT_SECRET_KEY, options);
 
     return token;
@@ -47,7 +47,8 @@ export const register = async (req, res) => {
         });
 
         user = {
-            email: email
+            email: email,
+            company: companyName
         }
         const jwtToken = generateJWT(user);
 

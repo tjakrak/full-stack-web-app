@@ -7,8 +7,10 @@ const assessment = (sequelize, Sequelize) => {
         organization_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
-            references: 'organizations',
-            referencesKey: 'id'
+            references: {
+                model: 'organizations',
+                key: 'id'
+            }
         }
     });
   

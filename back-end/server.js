@@ -3,6 +3,8 @@ import './config/load.env.js';
 import cors from 'cors';
 import db from './models/index.js';
 import userRoutes from './routes/user.routes.js';
+import orgRoutes from './routes/org.routes.js';
+import assessmentRoutes from './routes/assessment.routes.js';
 import SESSION_CONFIG from './config/session.config.js';
 import session from 'express-session';
 import flash from 'express-flash';
@@ -23,15 +25,9 @@ app.use(flash());
 
 db.sequelize.sync(); // synchronizes the defined model schema with the database
 
-app.get("/", (req, res) => {
-    res.send("Success!");
-})
-
-// app.post("/register", async (req, res) => {
-//     const { email, password } = req.body;
-// })
-
 userRoutes(app);
+orgRoutes(app);
+assessmentRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;
