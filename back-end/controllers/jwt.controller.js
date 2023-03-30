@@ -3,23 +3,19 @@ import { JWT_SECRET_KEY } from '../config/jwt.config.js';
 import passport from 'passport';
 
 // Create a JWT with a payload containing the user's ID and email
-export function generateJWT(user, payload) {
+export function generateJWT(user) {
 
-    let options = {};
-
-    if (payload == null) {
-        payload = {
+    const payload = {
             id: user.id,
             email: user.email,
             company: user.company_name,
-            organization: user.organization
+            organization_id: user.organization_id
         };
 
-        options = {
-            expiresIn: '2h',
+    const options = {
+            expiresIn: '24h',
             algorithm: 'HS256'
         };
-    }
 
     const token = jwt.sign(payload, JWT_SECRET_KEY, options);
 
