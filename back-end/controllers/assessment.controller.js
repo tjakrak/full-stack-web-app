@@ -1,22 +1,47 @@
+import passport from 'passport';
 import { db } from '../models/index.js';
 
-export const add = async (req, res) => {
+export const addAssessment = async (req, res, next) => {
+    passport.authenticate('jwt', async (err, user, info) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Server error' });
+        }
+    
+        if (!user) {
+            return res.status(400).json({ message: info.message });
+        }
 
-    let {assessmentName, orgId} = req.body;
+        try {
+            let { assessment_name: assessmentName } = req.body;
 
-    try {
-        // Store all the information to the database
-        await db.org.create({
-            assessment_name: orgName,
-            organization_id: orgId
-        });
-
-        return res.status(200).json({ 
-            message: 'You have successfully registered a new org.', 
-        });
-
-      } catch (err) {
-        console.log(err);
-        return res.status(500).json({ message: 'Error creating user.' });
-      }
+            // Store all the information to the database
+            await db.org.create({
+                assessment_name: assessmentName,
+                organization_id: user.organization_id
+            });
+    
+            return res.status(200).json({ 
+                message: 'You have successfully created a new assessment for your organization.', 
+            });
+    
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ message: 'Error creating assessment.' });
+        }
+    }) (req, res, next);
 };
+
+export const getAssessments = async (req, res, next) => {
+    passport.authenticate('jwt', async (err, user, info) => {
+        try {
+            // Store all the information to the database
+            await db.org.create({
+                assessment_name: assessmentName,
+                organization_id: user.organization_id
+            });
+        } catch (err) {
+
+        }
+    })
+}
