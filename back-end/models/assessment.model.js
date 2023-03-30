@@ -11,7 +11,15 @@ const assessment = (sequelize, Sequelize) => {
                 model: 'organizations',
                 key: 'id'
             }
-        }
+        },
+        score: {
+            type: Sequelize.DECIMAL(10, 1),
+            defaultValue: 0,
+        },
+        status: {
+            type: Sequelize.STRING,
+            defaultValue: 'Not Started',
+        },
     });
   
     return Assessment;
