@@ -14,8 +14,8 @@ export const register = async (req, res, next) => {
             return res.status(400).json({ message: info.message });
         }
 
-        const { orgName } = req.body;
-    
+        const { organization_name: orgName } = req.body;
+
         try {
             // Store organization to the database
             const org = await db.org.create({
@@ -38,5 +38,5 @@ export const register = async (req, res, next) => {
             console.log(err);
             return res.status(500).json({ message: 'Error creating org.' });
         }
-    })(req, res, next)
+    })(req, res, next);
 };

@@ -22,7 +22,7 @@ async function submitOrgName() {
 
       // Register organization to the backend and waiting for the response
       const response = await axios.post('/api/org/register', {
-        orgName: orgName
+        organization_name: orgName
       }, config);
 
       console.log(response);

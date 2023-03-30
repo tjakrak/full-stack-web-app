@@ -1,20 +1,28 @@
 <script setup>
 import { ref } from 'vue'
 import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css'
-import { useRouter } from 'vue-router'
 import axios from '@/axios'
+import { useRouter } from 'vue-router'
 import Carrousel from '../components/Carrousel.vue'
+import Cookies from 'js-cookie'
 
 const router = useRouter();
 
-const username = ref('');
+const email = ref('');
 const password = ref('');
 
 const login = async () => {
 
   try {
-    const response = await axios.post('/api/user/login', { email: username.value, password: password.value });
-    console.log(response.data);
+    // Register user to the backend and waiting for the response
+    const response = await axios.post('/api/user/login', { 
+      email: email.value, 
+      password: password.value 
+    })
+    // Get jwt token and store to the cookie
+    const token = response.data.accessToken
+    Cookies.set('token', token)
+    // Redirect to the home page
     router.push('/');
   } catch (error) {
     const errorMessage = error.response.data.message;
@@ -31,14 +39,14 @@ const login = async () => {
       <h2 class="slds-text-heading_medium slds-p-bottom_small">Login</h2>
       <div class="slds-form slds-form_stacked">
         <div class="slds-form-element">
-          <label class="slds-form-element__label" for="username">Username</label>
+          <label class="slds-form-element__label" for="email">Email</label>
           <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
             <svg class="slds-input__icon" aria-hidden="true">
               <use
                 xlink:href="@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#user"
               ></use>
             </svg>
-            <input id="username" type="text" class="slds-input" v-model="username" autocomplete="email" />
+            <input id="email" type="text" class="slds-input" v-model="email" autocomplete="email" />
           </div>
         </div>
         <div class="slds-form-element">
@@ -64,3 +72,13 @@ const login = async () => {
     </div>
   </div>
 </template>
+
+<style>
+.slds-form-element {
+  --slds-c-button-brand-color-background: var(--lwc-palettePurple50);
+  --slds-c-button-brand-color-background-hover: var(--lwc-palettePurple30);
+  --slds-c-button-brand-color-border: var(--lwc-palettePurple50);
+  --slds-c-button-brand-color-border-hover: var(--lwc-palettePurple30);
+  --slds-c-button-brand-text-color: var(--lwc-paletteNeutral100);
+}
+</style>

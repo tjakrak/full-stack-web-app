@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css'
 import axios from '@/axios'
 import { useRouter } from 'vue-router'
@@ -31,9 +31,9 @@ const Register = async () => {
 
   // create an object with the data that is going to be sent to the backend
   const data = {
-    firstName: firstName.value,
-    lastName: lastName.value,
-    companyName: companyName.value,
+    first_name: firstName.value,
+    last_name: lastName.value,
+    company_name: companyName.value,
     email: email.value,
     password: password.value
   }
@@ -55,7 +55,7 @@ const Register = async () => {
   }
 }
 
-const clientId = process.env.GOOGLE_CLIENT_ID // Replace with your client ID
+const clientId = inject('googleClientId')
 const signInPending = ref(false)
 
 const handleCredentialResponse = async (credential) => {

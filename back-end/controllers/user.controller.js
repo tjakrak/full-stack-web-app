@@ -6,7 +6,13 @@ import passport from 'passport';
 // register
 export const register = async (req, res) => {
 
-    const {firstName, lastName, companyName, email, password} = req.body;
+    const { 
+        first_name: firstName, 
+        last_name: lastName, 
+        company_name: companyName, 
+        email, 
+        password 
+    } = req.body;
 
     // Hash password uding bcrypt
     const salt = await bcrypt.genSalt(10);
