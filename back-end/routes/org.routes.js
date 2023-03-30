@@ -1,9 +1,11 @@
 import express from 'express';
+import { register } from '../controllers/organization.controller.js'
+import { authMiddleWare, generateJWT } from '../controllers/jwt.controller.js';
 
 const router = express.Router();
 
-// Register a new user
-// router.post("/register", register);
+// Register a new org
+router.post("/register", authMiddleWare, register);
 
 export default (app) => {
     app.use("/api/org", router);
