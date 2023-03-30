@@ -16,7 +16,7 @@ export const addAssessment = async (req, res, next) => {
             let { assessment_name: assessmentName } = req.body;
 
             // Store all the information to the database
-            await db.org.create({
+            await db.assessment.create({
                 assessment_name: assessmentName,
                 organization_id: user.organization_id
             });
@@ -36,12 +36,15 @@ export const getAssessments = async (req, res, next) => {
     passport.authenticate('jwt', async (err, user, info) => {
         try {
             // Store all the information to the database
-            await db.org.create({
-                assessment_name: assessmentName,
-                organization_id: user.organization_id
+            const assessments = await db.assessment.findAll({
+                where: {
+                    organization_id: user.organization_id
+                }
             });
+
+            return res.status(200).json(assessments\)
         } catch (err) {
 
         }
-    })
+    }) (req, res, next);
 }
