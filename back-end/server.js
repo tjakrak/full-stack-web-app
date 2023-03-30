@@ -19,7 +19,6 @@ app.use(express.json()); // parse requests of content-type - application/json
 app.use(express.urlencoded({ extended: true })); // parse requests of content-type - application/x-www-form-urlencoded
 app.use(cors()); // enables Cross-Origin Resource Sharing
 app.use(session(SESSION_CONFIG));
-app.use(passport.initialize()); // Function inside passport which initializes passport
 app.use(passport.session()); // Store our variables to be persisted across the whole session. Works with app.use(Session) above
 app.use(flash());
 
