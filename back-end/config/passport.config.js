@@ -36,15 +36,13 @@ export function initializePassport(passport) {
         secretOrKey: `${JWT_SECRET_KEY}`,
     };
     passport.use(new JwtStrategy(jwtOptions, async (jwt_payload, done) => {
-
-        if (payload.exp <= Math.floor(Date.now() / 1000)) {
+        if (jwt_payload.exp >= Math.floor(Date.now() / 1000 + 2 * 60 * 60)) {
             // Token has expired
             return done(null, false, { message: 'Token expired' });
         }
-        
+
         try {
-            console.log(jwt_payload);
-            const user = await db.user.findByPk(jwt_payload.sub);
+            const user = await db.user.findByPk(jwt_payload.id);
         
             if (!user) {
                 return done(null, false);
@@ -86,19 +84,6 @@ export function initializePassport(passport) {
             }
         }
     ));
-
-    passport.serializeUser((user, done) => {
-        done(null, user.id);
-    });
-    
-    passport.deserializeUser(async (id, done) => {
-        try {
-            const user = await db.user.findByPk(id);
-            done(null, user);
-        } catch (err) {
-            done(err);
-        }
-    });
 };
 
 

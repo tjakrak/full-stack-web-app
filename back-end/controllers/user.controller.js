@@ -1,36 +1,19 @@
 import { db } from '../models/index.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { JWT_SECRET_KEY } from '../config/jwt.config.js';
+import { generateJWT } from './jwt.controller.js';
 import passport from 'passport';
-
-// Create a JWT with a payload containing the user's ID and email
-function generateJWT(user) {
-    const payload = {
-        email: user.email,
-        company: user.companyName
-    };
-
-    const options = {
-        expiresIn: '1h'
-    };
-
-    const token = jwt.sign(payload, JWT_SECRET_KEY, options);
-
-    return token;
-}
 
 // register
 export const register = async (req, res) => {
 
-    let {firstName, lastName, companyName, email, password} = req.body;
+    const {firstName, lastName, companyName, email, password} = req.body;
 
     // Hash password uding bcrypt
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     try {
-        let user = await db.user.findOne({ where: { email: email } });
+        const user = await db.user.findOne({ where: { email: email } });
     
         // Check if user already exist in the database
         if (user) {
@@ -38,7 +21,7 @@ export const register = async (req, res) => {
         }
     
         // Store all the information to the database
-        await db.user.create({
+        const newUser = await db.user.create({
             first_name: firstName,
             last_name: lastName,
             company_name: companyName,
@@ -46,11 +29,7 @@ export const register = async (req, res) => {
             password: hashedPassword
         });
 
-        user = {
-            email: email,
-            company: companyName
-        }
-        const jwtToken = generateJWT(user);
+        const jwtToken = generateJWT(newUser.dataValues);
 
         return res.status(200).json({ 
             message: 'You have successfully registered.', 
