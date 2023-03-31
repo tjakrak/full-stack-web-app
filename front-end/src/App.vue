@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css'
 </script>
 
 <template>
