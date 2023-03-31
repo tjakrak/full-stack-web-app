@@ -1,9 +1,8 @@
 <script setup>
-import { ref, inject } from 'vue'
-import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css'
 import axios from '@/axios'
-import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie'
+import { ref, inject } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const firstName = ref('')
@@ -42,7 +41,7 @@ const Register = async () => {
     const response = await axios.post('/api/user/register', data)
     // Get jwt token and store to the cookie
     const token = response.data.accessToken
-    Cookies.set('token', token)
+    Cookies.set('jwtToken', token)
     const successMessage = response.data.message
     alert(successMessage)
     router.push('/register/org')
@@ -148,7 +147,7 @@ const handleSignIn = async () => {
             </div>
           </div>
           <div class="slds-form-element">
-            <label class="slds-form-element__label" for="password">Confirm Password</label>
+            <label class="slds-form-element__label" for="passwordConf">Confirm Password</label>
             <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
               <svg class="slds-input__icon" aria-hidden="true">
                 <use

@@ -1,10 +1,8 @@
 <script setup>
-import { ref } from 'vue'
-import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css'
 import axios from '@/axios'
-import { useRouter } from 'vue-router'
-import Carrousel from '../components/Carrousel.vue'
 import Cookies from 'js-cookie'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter();
 
@@ -17,11 +15,12 @@ const login = async () => {
     // Register user to the backend and waiting for the response
     const response = await axios.post('/api/user/login', { 
       email: email.value, 
-      password: password.value 
+      password: password.value
     })
     // Get jwt token and store to the cookie
-    const token = response.data.accessToken
-    Cookies.set('token', token)
+    console.log(response.data)
+    const jwtToken = response.data.accessToken
+    Cookies.set('jwtToken', jwtToken)
     // Redirect to the home page
     router.push('/');
   } catch (error) {

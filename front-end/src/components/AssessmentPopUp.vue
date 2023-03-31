@@ -17,15 +17,13 @@ async function addNewAssessment() {
       }
     };
     
-    const response = await axios.post('/api/assessment/register', { 
+    const response = await axios.post('/api/assessment', { 
       assessment_name: assessmentName.value, 
     }, config)
 
     emit('close')
   } catch(error) {
     console.log(error)
-    // const errorMessage = error.response.data.message
-    // return alert(errorMessage)
   }
 }
 

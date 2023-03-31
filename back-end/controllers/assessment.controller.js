@@ -34,6 +34,15 @@ export const addAssessment = async (req, res, next) => {
 
 export const getAssessments = async (req, res, next) => {
     passport.authenticate('jwt', async (err, user, info) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Server error' });
+        }
+    
+        if (!user) {
+            return res.status(400).json({ message: info.message });
+        }
+
         try {
             // Store all the information to the database
             const assessments = await db.assessment.findAll({
@@ -42,7 +51,7 @@ export const getAssessments = async (req, res, next) => {
                 }
             });
 
-            return res.status(200).json(assessments\)
+            return res.status(200).json(assessments)
         } catch (err) {
 
         }

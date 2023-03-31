@@ -1,9 +1,11 @@
 <script setup>
 import axios from '@/axios'
-import AssessmentPopUp from './AssessmentPopUp.vue';
+import AssessmentPopUp from './AssessmentPopUp.vue'
+import Cookies from 'js-cookie'
 import { onMounted, ref } from 'vue'
 
 let isPopupVisible = ref(false)
+const assessments = ref()
 
 function showPopup() {
   isPopupVisible.value = true
@@ -14,39 +16,27 @@ function closePopup() {
 }
 
 onMounted(async () => {
-  const response = await axios.get('/api/')
-})
+  try {
+    const jwtToken = Cookies.get('jwtToken')
 
-const assessments = [
-  {
-    id: 1,
-    assignment: 'Assessment 1',
-    description: 'Description for Assignment 1',
-    dueDate: '2023-04-01',
-    status: 'In Progress',
-    assignedTo: 'John Doe',
-    assignedBy: 'Jane Smith'
-  },
-  {
-    id: 2,
-    assignment: 'Assessment 2',
-    description: 'Description for Assignment 2',
-    dueDate: '2023-05-01',
-    status: 'Not Started',
-    assignedTo: 'John Doe',
-    assignedBy: 'Jane Smith'
-  },
-  {
-    id: 3,
-    assignment: 'Assessment 3',
-    description: 'Description for Assignment 3',
-    dueDate: '2023-06-01',
-    status: 'Completed',
-    assignedTo: 'John Doe',
-    assignedBy: 'Jane Smith'
+    if (jwtToken) {
+      // Set Authorization header with token value
+      const config = {
+        headers: {
+          'Authorization': `${jwtToken}`
+        }
+      };
+
+      // If token exist, decode the JWT and update companyName
+      const response = await axios.get('/api/assessments', config)
+      console.log(response)
+      assessments.value = response.data
+    }
+
+  } catch (error) {
+
   }
-]
-
+})
 
 </script>
 
@@ -106,12 +96,12 @@ const assessments = [
             :key="assessment.id"
           >
             <th scope="row">
-              <div class="slds-truncate" :title="assessment.assignment">
-                <a href="#" tabindex="-1">{{ assessment.assignment }}</a>
+              <div class="slds-truncate" :title="assessment.assessment_name">
+                <a href="#" tabindex="-1">{{ assessment.assessment_name }}</a>
               </div>
             </th>
             <td role="gridcell">
-              <div class="slds-truncate" :title="assessment.dueDate">{{ assessment.dueDate }}</div>
+              <div class="slds-truncate" :title="assessment.createdAt">{{ new Date(assessment.createdAt).toLocaleString() }}</div>
             </td>
             <td role="gridcell">
               <div class="slds-truncate" :title="assessment.score">{{ assessment.score }}</div>

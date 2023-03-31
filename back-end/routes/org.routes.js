@@ -5,9 +5,9 @@ import { authMiddleWare } from '../controllers/jwt.controller.js';
 const router = express.Router();
 
 // Register a new org
-router.post("/register", register);
+router.post("/org", register);
 
 export default (app) => {
-    app.use("/api/org", router);
+    app.use("/api", router);
 };
   
