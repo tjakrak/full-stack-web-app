@@ -2,11 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import './assets/main.css'
-import dotenv from 'dotenv'
 import Cookies from 'js-cookie'
-
-// Load environment variables from .env file
-dotenv.config();
 
 const cookieMixin = {
   created() {
@@ -19,6 +15,10 @@ const cookieMixin = {
 }
 
 const app = createApp(App)
+
+const GOOGLE_CLIENT_ID = import.meta.env.VUE_APP_GOOGLE_CLIENT_ID
+
+app.provide('googleClientId', GOOGLE_CLIENT_ID)
 
 app.mixin(cookieMixin)
 
