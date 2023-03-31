@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import Cookies from 'js-cookie'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,37 +22,47 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
     {
+      path: '/register/option',
+      name: 'register-options',
+      component: () => import('../views/RegisterOptionView.vue')
+    },
+    {
+      path: '/register/org',
+      name: 'register-org',
+      component: () => import('../views/RegisterOrgView.vue')
+    },
+    {
       path: '/register',
       name: 'register',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/RegisterView.vue')
     },
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
     }
   ]
 })
 
-// router.beforeEach(async (to, from, next) => {
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     // Authentication check
-//     const token = localStorage.getItem('token')
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // Authentication check
+    const jwtToken = Cookies.get('jwtToken')
+    console.log(jwtToken);
 
-//     if (token) {
-//       return next()
-//     }
+    if (!jwtToken) {
+      return next('/login')
+    }
 
-//     return next('/login')
-//   }
+    return next()
+  }
 
-//   next()
-// })
+  // Allow navigation to /register route without authentication
+  if (to.path === '/register') {
+    return next()
+  }
+
+  next()
+})
 
 export default router
