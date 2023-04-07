@@ -68,15 +68,9 @@ export const login = async(req, res, next) => {
             return res.status(400).json({ message: info.message });
         }
   
-        req.logIn(user, function(err) {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ message: 'Server error' });
-            }
-            
-            const jwtToken = generateJWT(user);
-            return res.status(200).json({ accessToken: `Bearer ${jwtToken}` });
-        });
-  
+        const jwtToken = generateJWT(user);
+        
+        return res.status(200).json({ accessToken: `Bearer ${jwtToken}` });
+
     })(req, res, next);
 }
