@@ -4,6 +4,7 @@ import AssessmentPopUp from './AssessmentPopUp.vue'
 import Cookies from 'js-cookie'
 import { onMounted, ref } from 'vue'
 
+let jwtToken = ''
 let isPopupVisible = ref(false)
 const assessments = ref()
 
@@ -12,14 +13,12 @@ function showPopup() {
 }
 
 function closePopup() {
+  getAssessments();
   isPopupVisible.value = false
 }
 
-onMounted(async () => {
-  try {
-    const jwtToken = Cookies.get('jwtToken')
-
-    if (jwtToken) {
+async function getAssessments() {
+  if (jwtToken) {
       // Set Authorization header with token value
       const config = {
         headers: {
@@ -29,13 +28,14 @@ onMounted(async () => {
 
       // If token exist, decode the JWT and update companyName
       const response = await axios.get('/api/assessments', config)
-      console.log(response)
+      
       assessments.value = response.data
     }
+}
 
-  } catch (error) {
-
-  }
+onMounted(async () => {
+  jwtToken = Cookies.get('jwtToken')
+  getAssessments();
 })
 
 </script>
@@ -97,7 +97,7 @@ onMounted(async () => {
           >
             <th scope="row">
               <div class="slds-truncate" :title="assessment.assessment_name">
-                <a href="#" tabindex="-1">{{ assessment.assessment_name }}</a>
+                <RouterLink :to="`assessment/${assessment.id}`">{{ assessment.assessment_name }}</RouterLink>
               </div>
             </th>
             <td role="gridcell">
