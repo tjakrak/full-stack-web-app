@@ -36,11 +36,11 @@ export function initializePassport(passport) {
         secretOrKey: `${JWT_SECRET_KEY}`,
     };
     passport.use(new JwtStrategy(jwtOptions, async (jwt_payload, done) => {
-        console.log(jwt_payload);
-        if (jwt_payload.exp >= Math.floor(Date.now() / 1000 + 24 * 60 * 60)) {
+        if (jwt_payload.exp >= Date.now()) {
             // Token has expired
             return done(null, false, { message: 'Token expired' });
         }
+
         try {
             const user = await db.user.findByPk(jwt_payload.id);
         
