@@ -18,9 +18,9 @@ const login = async () => {
       password: password.value
     })
     // Get jwt token and store to the cookie
-    console.log(response.data)
     const jwtToken = response.data.accessToken
     Cookies.set('jwtToken', jwtToken)
+
     // Redirect to the home page
     router.push('/');
   } catch (error) {
@@ -32,7 +32,6 @@ const login = async () => {
 </script>
 
 <template>
-  <!-- <Carrousel></Carrousel> -->
   <div class="slds-grid slds-grid_frame slds-grid_align-center slds-p-around_large">
     <div class="slds-box slds-theme_default slds-m-around_medium">
       <h2 class="slds-text-heading_medium slds-p-bottom_small">Login</h2>
