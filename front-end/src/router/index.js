@@ -37,6 +37,11 @@ const router = createRouter({
       component: () => import('../views/RegisterView.vue')
     },
     {
+      path: '/assessment/:id',
+      name: 'assessment',
+      component: () => import('../views/AssessmentView.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import('../views/AboutView.vue')
@@ -48,7 +53,6 @@ router.beforeEach(async (to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // Authentication check
     const jwtToken = Cookies.get('jwtToken')
-    console.log(jwtToken);
 
     if (!jwtToken) {
       return next('/login')
