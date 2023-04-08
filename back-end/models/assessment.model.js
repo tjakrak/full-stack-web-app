@@ -24,5 +24,5 @@ const assessment = (sequelize, Sequelize) => {
   
     return Assessment;
 };
-  
+
 export default assessment;

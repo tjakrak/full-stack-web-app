@@ -3,6 +3,7 @@ import Sequelize from "sequelize";
 import user from "./user.model.js";
 import org from "./org.model.js";
 import assessment from "./assessment.model.js";
+import question from "./questions.model.js";
 
 const sequelize = new Sequelize(DB_CONFIG.DB, DB_CONFIG.USER, DB_CONFIG.PASSWORD, {
     host: DB_CONFIG.HOST, 
@@ -20,7 +21,8 @@ export const db = {
     sequelize: sequelize,
     user: user(sequelize, Sequelize),
     org: org(sequelize, Sequelize),
-    assessment: assessment(sequelize, Sequelize)
+    assessment: assessment(sequelize, Sequelize),
+    question: question(sequelize, Sequelize)
 };
 
 sequelize.authenticate().then(() => {
