@@ -22,11 +22,6 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
     {
-      path: '/register/option',
-      name: 'register-options',
-      component: () => import('../views/RegisterOptionView.vue')
-    },
-    {
       path: '/register/org',
       name: 'register-org',
       component: () => import('../views/RegisterOrgView.vue')
